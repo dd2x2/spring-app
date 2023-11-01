@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Все товары</title>
+</head>
+<body>
+<button onclick="window.location.href='/goods/add';">Добавить товар</button>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Производитель</th>
+        <th>Описание</th>
+        <th>Цена</th>
+        <th>Количество</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="obj : ${goods}">
+        <td th:text="${objStat.count}"></td>
+        <td th:text="${obj.name}"></td>
+        <td th:text="${obj.manufacturer}"></td>
+        <td th:text="${obj.description}"></td>
+        <td th:text="${obj.price}"></td>
+        <td th:text="${obj.count}"></td>
+        <td>
+            <button th:onclick="'window.location.href=\'/goods/edit/' + ${obj.id} + '\''">Редактировать</button>
+            <button th:onclick="'window.location.href=\'/goods/delete/' + ${obj.id} + '\''">Удалить</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
