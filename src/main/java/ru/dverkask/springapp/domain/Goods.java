@@ -1,19 +1,17 @@
 package ru.dverkask.springapp.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Data
 @Table(name = "goods")
 @Getter
 @Setter
 public class Goods {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -21,7 +19,7 @@ public class Goods {
     @Column(nullable = false)
     private String description;
     @Column(nullable = false)
-    private int count;
+    private double price;
     @Column(nullable = false)
-    private float price;
+    private int count;
 }

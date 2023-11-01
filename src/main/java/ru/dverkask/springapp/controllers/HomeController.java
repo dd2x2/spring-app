@@ -1,13 +1,12 @@
 package ru.dverkask.springapp.controllers;
 
 import lombok.AllArgsConstructor;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.dverkask.springapp.domain.Role;
-import ru.dverkask.springapp.domain.UserEntity;
+import ru.dverkask.springapp.domain.entity.UserEntity;
 import ru.dverkask.springapp.repositories.UserRepository;
 
 import java.util.HashSet;
@@ -25,8 +24,15 @@ public class HomeController {
         String currentUsername = authentication.getName();
         Optional<UserEntity> user = userRepository.findByUsername(currentUsername);
         Set<Role> roles = new HashSet<>();
-        if (user.isPresent())
+        System.out.println(currentUsername);
+        System.out.println(user);
+        if (user.isPresent()) {
             roles = user.get().getRoles();
+            System.out.println("зашло в иф");
+            System.out.println(roles + " " + user.get().getUsername() + " " + user.get().getRoles());
+
+        }
+        System.out.println("не зашло в иф или вышло из иф");
 
         if (roles.contains(Role.ADMIN)) {
             return "admin.html";

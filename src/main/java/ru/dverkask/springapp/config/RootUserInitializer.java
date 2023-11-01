@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import ru.dverkask.springapp.domain.Role;
-import ru.dverkask.springapp.domain.UserEntity;
+import ru.dverkask.springapp.domain.entity.UserEntity;
 import ru.dverkask.springapp.repositories.UserRepository;
 
 import java.util.Collections;

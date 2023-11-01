@@ -1,7 +1,9 @@
 package ru.dverkask.springapp.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor
 public enum Role {
     ADMIN("Администратор"),
     STOREKEEPER("Кладовщик"),
@@ -9,7 +11,4 @@ public enum Role {
 
     @Getter
     private final String description;
-    Role(String description) {
-        this.description = description;
-    }
 }
