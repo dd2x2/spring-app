@@ -7,4 +7,5 @@ import java.util.List;
 @AllArgsConstructor
 public class Invoice {
     private List<Goods> listOfGoods;
+    private String dick;
 }
