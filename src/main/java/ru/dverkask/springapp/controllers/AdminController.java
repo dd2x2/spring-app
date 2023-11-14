@@ -50,14 +50,14 @@ public class AdminController {
     @GetMapping("/goods/add")
     public String addGoods(Model model) {
         model.addAttribute("goods", new Goods());
-        return "add_goods";
+        return "admin/add_goods";
     }
 
     @PostMapping("goods/add")
     public String saveGoods(@ModelAttribute("goods") Goods goods) {
         administrator.createGoods(goods);
 
-        return "redirect:/goods";
+        return "redirect:/admin/goods";
     }
 
     @GetMapping("/goods/delete/{id}")

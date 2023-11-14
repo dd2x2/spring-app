@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "goods")
 @Getter
@@ -22,4 +24,7 @@ public class Goods {
     private double price;
     @Column(nullable = false)
     private int count;
+
+    @OneToMany(mappedBy = "goods", cascade = CascadeType.ALL)
+    private List<OrderGoods> ordersWithCount;
 }

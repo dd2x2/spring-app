@@ -7,6 +7,7 @@ import ru.dverkask.springapp.domain.entity.Seller;
 import ru.dverkask.springapp.domain.entity.UserEntity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,6 +15,12 @@ import java.util.List;
 @Getter
 @Setter
 public class Order {
+    public enum OrderStatus {
+        ORDERED,
+        COMPLETED,
+        CANCELED
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,13 +28,10 @@ public class Order {
     @Column(name = "seller_id", nullable = false)
     private Long sellerId;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "order_goods",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "goods_id")
-    )
-    private List<Goods> goods;
-
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderGoods> goodsWithCount = new ArrayList<>();
     private LocalDateTime orderTime;
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private OrderStatus status;
 }

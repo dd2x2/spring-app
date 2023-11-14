@@ -24,22 +24,14 @@ public class HomeController {
         String currentUsername = authentication.getName();
         Optional<UserEntity> user = userRepository.findByUsername(currentUsername);
         Set<Role> roles = new HashSet<>();
-        System.out.println(currentUsername);
-        System.out.println(user);
-        if (user.isPresent()) {
+        if (user.isPresent())
             roles = user.get().getRoles();
-            System.out.println("зашло в иф");
-            System.out.println(roles + " " + user.get().getUsername() + " " + user.get().getRoles());
-
-        }
-        System.out.println("не зашло в иф или вышло из иф");
-
         if (roles.contains(Role.ADMIN)) {
-            return "admin.html";
+            return "admin/admin";
         } else if (roles.contains(Role.SELLER)) {
-            return "seller.html";
+            return "seller/seller";
         } else if (roles.contains(Role.STOREKEEPER)) {
-            return "storekeeper.html";
+            return "storekeeper";
         } else {
             return "redirect:/access-denied";
         }

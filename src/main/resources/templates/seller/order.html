@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Оформление заказа</title>
+</head>
+<body>
+<button type="button" onclick="window.location.href='/seller/order/add'">Добавить товар в заказ</button>
+<br>
+<form th:action="@{/seller/order}" method="post">
+<button type="submit">Оформить заказ</button>
+<br>
+<table>
+    <tr>
+        <th>Название</th>
+        <th>Производитель</th>
+        <th>Количество</th>
+    </tr>
+    <tfoot th:if="${#lists.isEmpty(goodsList)}">
+    <tr>
+        <td colspan="3">Нет товаров</td>
+    </tr>
+    </tfoot>
+
+    <tbody th:each="goods : ${goodsList}">
+    <tr>
+        <td th:text="${goods.name}"></td>
+        <td th:text="${goods.manufacturer}"></td>
+        <td th:text="${goods.count}"></td>
+    </tr>
+    </tbody>
+
+</table>
+</form>
+</body>
+</html>

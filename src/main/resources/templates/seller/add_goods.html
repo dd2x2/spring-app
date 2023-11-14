@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление товара</title>
+</head>
+<body>
+<form th:action="@{/seller/order/add}" th:object="${goods}" method="post">
+    <label for="name">Название:</label><br>
+    <input type="text" id="name" name="name" th:field="*{name}"><br>
+    <label for="manufacturer">Производитель:</label><br>
+    <input type="text" id="manufacturer" name="manufacturer" th:field="*{manufacturer}"><br>
+    <label for="count">Количество:</label><br>
+    <input type="number" id="count" name="count" th:field="*{count}"><br>
+    <input type="submit" value="Добавить товар">
+</form>
+</body>
+</html>
