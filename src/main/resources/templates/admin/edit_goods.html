@@ -3,21 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <title>Редактирование товара</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
-<form th:action="@{'/goods/edit/' + ${goods.id}}" th:object="${goods}" method="post">
-    <label for="name">Название:</label><br>
-    <input type="text" id="name" th:field="*{name}"><br>
-    <label for="manufacturer">Производитель:</label><br>
-    <input type="text" id="manufacturer" th:field="*{manufacturer}"><br>
-    <label for="description">Описание:</label><br>
-    <input type="text" id="description" th:field="*{description}"><br>
-    <label for="price">Цена:</label><br>
-    <input type="text" id="price" th:field="*{price}"><br>
-    <label for="count">Количество:</label><br>
-    <input type="text" id="count" th:field="*{count}"><br>
-    <input type="submit" value="Сохранить">
-</form>
-<button onclick="window.location.href='/goods';">Отмена</button>
+<div id="mySidenav" class="sidenav">
+    <div>
+        <a href="/" class="user-display" th:text="${currentUser}"></a>
+        <a href="/admin/register" class="user-display">Регистрация пользователей</a>
+        <a href="/admin/goods" class="user-display">Товары</a>
+    </div>
+    <div class="logout-container">
+        <a href="/logout" class="user-display">Выйти</a>
+    </div>
+</div>
+<div class="main-content">
+<h1>Редактирование товара</h1>
+<div id="register-form">
+    <form th:action="@{'/admin/goods/edit/' + ${goods.id}}" th:object="${goods}" method="post">
+        <div class="form-group row">
+            <label class="col-4 col-form-label">Название: </label>
+            <div class="col-8">
+                <input type="text" th:field="*{name}" class="form-control" required/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-4 col-form-label">Производитель: </label>
+            <div class="col-8">
+                <input type="text" th:field="*{manufacturer}" class="form-control" required/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-4 col-form-label">Описание: </label>
+            <div class="col-8">
+                <input type="text" th:field="*{description}" class="form-control" required/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-4 col-form-label">Цена: </label>
+            <div class="col-8">
+                <input type="number" th:field="*{price}" step="0.01" class="form-control" required/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-4 col-form-label">Количество: </label>
+            <div class="col-8">
+                <input type="number" th:field="*{count}" class="form-control" required/>
+            </div>
+        </div>
+        <br>
+        <div style="display: flex; align-items: center; justify-content: flex-start;">
+            <input class="blue-button centred" type="submit" value="Сохранить">
+            <button class="black-button" style="margin-left: 10px;" onclick="window.location.href='/admin/goods';">Отмена</button>
+        </div>
+    </form>
+</div>
+</div>
 </body>
 </html>

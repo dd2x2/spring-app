@@ -3,34 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <title>Оформление заказа</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <script src="/js/toggleInput.js"></script>
 </head>
 <body>
-<button type="button" onclick="window.location.href='/seller/order/add'">Добавить товар в заказ</button>
-<br>
+<div id="mySidenav" class="sidenav">
+    <div>
+        <a href="/" class="user-display" th:text="${currentUser}"></a>
+        <a href="/seller/goods" class="user-display">Товары</a>
+        <a href="/seller/order" class="user-display">Заказы</a>
+    </div>
+    <div class="logout-container">
+        <a href="/logout" class="user-display">Выйти</a>
+    </div>
+</div>
+<div class="main-content">
 <form th:action="@{/seller/order}" method="post">
-<button type="submit">Оформить заказ</button>
+<button class="black-button centred" type="submit">Заказать</button>
 <br>
 <table>
+    <thead>
     <tr>
         <th>Название</th>
         <th>Производитель</th>
         <th>Количество</th>
     </tr>
-    <tfoot th:if="${#lists.isEmpty(goodsList)}">
+    </thead>
+    <tfoot th:if="${#lists.isEmpty(goods)}">
     <tr>
         <td colspan="3">Нет товаров</td>
     </tr>
     </tfoot>
 
-    <tbody th:each="goods : ${goodsList}">
+    <tbody th:each="obj : ${goods}">
     <tr>
-        <td th:text="${goods.name}"></td>
-        <td th:text="${goods.manufacturer}"></td>
-        <td th:text="${goods.count}"></td>
+        <td th:text="${obj.name}"></td>
+        <td th:text="${obj.manufacturer}"></td>
+        <td th:text="${obj.count}"></td>
+        <td><input type="checkbox" th:id="${'checkbox_'+obj.id}" th:value="${obj.id}" th:name="selectedgoods" th:onclick="'enableDisableTextBox(\'' + ${obj.id} + '\');'"/>
+        <input type='hidden' th:name="'id_' + ${obj.id}" th:value="${obj.id}">
+        <input type="text" th:id="${'text_'+obj.id}" th:name="${'text_'+obj.id}" disabled/></td>
     </tr>
     </tbody>
 
 </table>
 </form>
+</div>
 </body>
 </html>

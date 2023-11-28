@@ -4,11 +4,9 @@ import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.dverkask.springapp.domain.Goods;
-import ru.dverkask.springapp.domain.Order;
-import ru.dverkask.springapp.domain.OrderGoods;
-import ru.dverkask.springapp.domain.Role;
+import ru.dverkask.springapp.domain.*;
 import ru.dverkask.springapp.repositories.OrderRepository;
+import ru.dverkask.springapp.repositories.ShopGoodsRepository;
 import ru.dverkask.springapp.repositories.UserRepository;
 
 import java.time.LocalDateTime;
@@ -19,6 +17,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class Seller extends UserEntity {
     private final OrderRepository orderRepository;
+    private final ShopGoodsRepository shopGoodsRepository;
     private final UserRepository userRepository;
 
     public void saveOrder(Long id, List<Goods> goodsList) {
@@ -39,6 +38,7 @@ public class Seller extends UserEntity {
                     orderGoods.setGoods(goods);
                     orderGoods.setCount(goods.getCount());
                     orderGoods.setOrder(order);
+                    orderGoods.setStatus(OrderGoods.GatherStatus.NOT_GATHERED);
 
                     order.getGoodsWithCount().add(orderGoods);
                 }
@@ -46,5 +46,9 @@ public class Seller extends UserEntity {
                 orderRepository.save(order);
             }
         }
+    }
+
+    public List<ShopGoods> getAllProducts() {
+        return (List<ShopGoods>) shopGoodsRepository.findAll();
     }
 }

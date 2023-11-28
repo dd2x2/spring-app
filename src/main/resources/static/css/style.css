@@ -1,0 +1,204 @@
+.sidenav {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow: auto;
+    overflow-x: hidden;
+    padding-top: 10px;
+    justify-content: space-between;
+}
+
+.main-content {
+    margin-left: 200px;
+    transition: margin-left .5s;
+    padding: 20px;
+}
+
+.user-display {
+    display: block;
+    padding: 10px;
+    color: #818181;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 20px;
+    text-align: center;
+}
+
+.user-display:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .logout-container {
+    margin-bottom: 30px;
+}
+
+.button-spacing {
+    margin-right: 20px;
+}
+
+p {
+    color: white;
+    font-size: 36px;
+}
+
+body {
+    background-color: #353c48;
+    font-family: "Segoe UI", serif;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table tr:nth-child(odd) td:not(.table-button) {
+    background-color: #2f343e;
+}
+
+table tr:nth-child(even) td:not(.table-button) {
+    background-color: #3c4452;
+}
+
+table thead th {
+    color: white;
+    font-size: 18px;
+}
+
+table td {
+    color: #7b8a96;
+    padding: 5px 65px;
+    font-size: 20px;
+}
+
+table td.narrow {
+    padding: 5px 35px;
+    font-size: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 0 auto;
+    max-width: 90%;
+}
+
+h1 {
+    color: #2eb7f3;
+    text-align: center;
+}
+
+#register-form {
+    background-color: #3c4452;
+    width: 50%;
+    margin: 0 auto;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#register-form .form-group label,
+#register-form .form-group select {
+    display: block;
+    margin: auto;
+    width: 50%;
+}
+
+#register-form .form-group label {
+    color: #ffffff;
+}
+
+#register-form .form-group input,
+#register-form .form-group select {
+    background-color: #3c4452;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 2px solid black;
+}
+
+#register-form .form-group {
+    text-align: center;
+}
+
+#register-form .form-group input,
+#register-form .form-group select {
+    font-size: 20px;
+}
+
+#register-form .form-group label {
+    font-size: 20px;
+}
+
+#register-form .form-group select {
+    color: #ffffff;
+}
+
+.blue-button {
+    background-color: #0079db;
+    color: white;
+    border: 1px solid black;
+    border-radius: 0;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.black-button {
+    background-color: #1a1e24;
+    color: white;
+    border: 1px solid black;
+    border-radius: 0;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.centred {
+    display: block;
+    margin: 0 auto;
+}
+
+input[type="text"] {
+    color: #7b8a96;
+}
+
+input[type="number"] {
+    color: #7b8a96;
+}
+
+.form-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-container {
+    display: flex;
+}
+
+.button-left {
+    margin-left: 20px;
+}
+
+.centre-from-left {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+}
+.buttons-group {
+    display: flex;
+    gap: 10px;
+}
+
+.order-container {
+    display: flex;
+    justify-content: center;
+    flex-flow: column nowrap;
+    align-items: center;
+}

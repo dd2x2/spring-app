@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Storekeeper Orders</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script src="/js/toggle.js"></script>
+    <script src="/js/checkSelectedGoods.js"></script>
+</head>
+<body>
+<div id="mySidenav" class="sidenav">
+    <div>
+        <a href="/" class="user-display" th:text="${currentUser}"></a>
+        <a href="/storekeeper/goods" class="user-display">Товары</a>
+        <a href="/storekeeper/orders" class="user-display">Заказы</a>
+    </div>
+    <div class="logout-container">
+        <a href="/logout" class="user-display">Выйти</a>
+    </div>
+</div>
+
+<div class="main-content">
+    <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+
+    <div th:if="${#lists.isEmpty(orders)}">
+        <p>На данный момент нет заказов</p>
+    </div>
+
+    <div th:each="order : ${orders}">
+        <div class="order-container">
+            <div class="buttons-group centre-from-left">
+                <form th:action="@{'/storekeeper/orders/complete/' + ${order.id}}" method="post" th:onsubmit="'checkSelectedGoods(event, \'' + ${order.id} + '\')'">
+                    <button class="blue-button" type="submit">Отправить товары в магазин</button>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" th:onclick="'toggle(this, \'order' + ${order.id} + '\')'"/></th>
+                            <th>Название</th>
+                            <th>Производитель</th>
+                            <th>Количество</th>
+                        </tr>
+                        </thead>
+                        <tr th:each="good : ${order.goodsWithCount}">
+                            <td><input type="checkbox" th:class="'order' + ${order.id}" th:value="${good.goods.id}"
+                                       th:id="${good.goods.id}" th:name="goods"/></td>
+                            <td th:text="${good.goods.name}"></td>
+                            <td th:text="${good.goods.manufacturer}"></td>
+                            <td th:text="${good.count}"></td>
+                        </tr>
+                    </table>
+                </form>
+                <form th:action="@{'/storekeeper/orders/cancel/' + ${order.id}}" method="post">
+                    <button class="black-button" type="submit">Отклонить заказ</button>
+                </form>
+            </div>
+        </div>
+        <hr/>
+    </div>
+</div>
+</body>
+</html>

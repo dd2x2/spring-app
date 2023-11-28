@@ -3,8 +3,6 @@ package ru.dverkask.springapp.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import ru.dverkask.springapp.domain.entity.Seller;
-import ru.dverkask.springapp.domain.entity.UserEntity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,6 +16,7 @@ public class Order {
     public enum OrderStatus {
         ORDERED,
         COMPLETED,
+        ACCEPTED,
         CANCELED
     }
 

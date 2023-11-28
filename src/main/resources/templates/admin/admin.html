@@ -2,14 +2,25 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome to CodeJava Home</title>
+    <title>Администратор</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
-<div class="container text-center">
-    <h1>ВСЕМ ПРИВЕТ</h1>
-    <h3><a th:href="@{/users}">List of Users</a></h3>
-    <h3><a th:href="@{/register}">Register</a></h3>
-    <h3><a th:href="@{/login}">Login</a></h3>
+<div id="mySidenav" class="sidenav">
+    <div>
+        <a href="/" class="user-display" th:text="${currentUser}"></a>
+        <a href="/admin/register" class="user-display">Регистрация пользователей</a>
+        <a href="/admin/goods" class="user-display">Товары</a>
+    </div>
+    <div class="logout-container">
+        <a href="/logout" class="user-display">Выйти</a>
+    </div>
+</div>
+<div class="main-content">
+    <h1>Вы вошли как администратор</h1>
+    <p>Курсовая работа по дисциплине "Технологии программирования".</p>
+    <p>Тема №9: "Магазин и склад".</p>
+    <p>Выполняли: dd2x2</p>
 </div>
 
 </body>

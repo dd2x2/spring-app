@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Storekeeper Orders</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<div id="mySidenav" class="sidenav">
+    <div>
+        <a href="/" class="user-display" th:text="${currentUser}"></a>
+        <a href="/seller/goods" class="user-display">Товары</a>
+        <a href="/seller/order" class="user-display">Заказы</a>
+    </div>
+    <div class="logout-container">
+        <a href="/logout" class="user-display">Выйти</a>
+    </div>
+</div>
+
+<div class="main-content">
+    <div th:if="${#lists.isEmpty(orders)}">
+        <p>На данный момент нет заказов</p>
+    </div>
+
+    <h1>Получение товаров со склада</h1>
+
+    <div th:each="order : ${orders}">
+        <h2>Заказ #[[${order.id}]]</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Название</th>
+                <th>Производитель</th>
+                <th>Количество</th>
+            </tr>
+            </thead>
+            <tr th:each="orderGoods : ${order.goodsWithCount}">
+                <td th:text="${orderGoods.goods.name}"></td>
+                <td th:text="${orderGoods.goods.manufacturer}"></td>
+                <td th:text="${orderGoods.count}"></td>
+            </tr>
+        </table>
+        <hr>
+    </div>
+</div>
+</body>
+</html>

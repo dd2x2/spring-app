@@ -2,22 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Продавец</title>
+    <title>Кладовщик</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
 <div id="mySidenav" class="sidenav">
     <div>
         <a href="/" class="user-display" th:text="${currentUser}"></a>
-        <a href="/seller/goods" class="user-display">Товары</a>
-        <a href="/seller/order" class="user-display">Заказы</a>
+        <a href="/storekeeper/goods" class="user-display">Товары</a>
+        <a href="/storekeeper/orders" class="user-display">Заказы</a>
     </div>
     <div class="logout-container">
         <a href="/logout" class="user-display">Выйти</a>
     </div>
 </div>
+
 <div class="main-content">
-    <h1>Вы вошли как продавец</h1>
+    <h1>Вы вошли как кладовщик</h1>
     <p>Курсовая работа по дисциплине "Технологии программирования".</p>
     <p>Тема №9: "Магазин и склад".</p>
     <p>Выполняли: dd2x2</p>

@@ -1,6 +1,7 @@
 package ru.dverkask.springapp.controllers;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,72 +12,106 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.dverkask.springapp.config.WebSecurityConfig;
-import ru.dverkask.springapp.domain.Goods;
-import ru.dverkask.springapp.domain.Order;
-import ru.dverkask.springapp.domain.Role;
+import ru.dverkask.springapp.domain.*;
 import ru.dverkask.springapp.domain.entity.Administrator;
 import ru.dverkask.springapp.domain.entity.Seller;
 import ru.dverkask.springapp.domain.entity.UserEntity;
 import ru.dverkask.springapp.repositories.GoodsRepository;
+import ru.dverkask.springapp.repositories.OrderGoodsRepository;
 import ru.dverkask.springapp.repositories.OrderRepository;
 import ru.dverkask.springapp.repositories.UserRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
 public class SellerController {
     private final Administrator administrator;
     private final UserRepository userRepository;
-    private final OrderRepository orderRepository;
     private final GoodsRepository goodsRepository;
+    private final OrderRepository orderRepository;
+    private final OrderGoodsRepository orderGoodsRepository;
     private final Seller seller;
-    private final List<Goods> goodsList = new ArrayList<>();
-
     @GetMapping("/seller/goods")
     @PreAuthorize("hasRole('SELLER')")
     public String getAllGoods(Model model) {
-        List<Goods> goods = administrator.getAllProducts();
+        List<ShopGoods> goods = seller.getAllProducts();
         model.addAttribute("goods", goods);
+        model.addAttribute("currentUser", WebSecurityConfig
+                .getUserEntity(userRepository)
+                .getUsername());
 
         return "seller/goods";
     }
 
     @GetMapping("/seller/order")
     public String createOrder(Model model) {
-        model.addAttribute("goodsList", goodsList);
+        List<Goods> goods = administrator.getAllProducts();
+        model.addAttribute("goods", goods);
+        model.addAttribute("currentUser", WebSecurityConfig
+                .getUserEntity(userRepository)
+                .getUsername());
         return "seller/order";
     }
 
     @PostMapping("/seller/order")
-    public String createOrder() {
+    public String createOrder(@RequestParam("selectedgoods") List<Integer> goodsIds,
+                              @RequestParam Map<String, String> allParams,
+                              Model model) {
+        model.addAttribute("currentUser", WebSecurityConfig
+                .getUserEntity(userRepository)
+                .getUsername());
+        Map<Integer, Integer> goodsAndValues = new HashMap<>();
+
+        goodsIds.forEach(id -> {
+            String value = allParams.get("text_" + id);
+            if (value != null) {
+                goodsAndValues.put(id, Integer.parseInt(value));
+            }
+        });
+
         UserEntity userEntity = WebSecurityConfig.getUserEntity(userRepository);
 
-        seller.saveOrder(userEntity.getId(), goodsList);
+        List<Goods> selectedGoods = new ArrayList<>(goodsAndValues.entrySet().stream()
+                .map(entry -> {
+                    Goods good = goodsRepository.findById(Long.valueOf(entry.getKey())).orElse(null);
+                    Goods goods = new Goods();
+                    if (good != null) {
+                        goods.setId(good.getId());
+                        goods.setCount(entry.getValue());
+                        goods.setName(good.getName());
+                        goods.setManufacturer(good.getManufacturer());
+                        goods.setDescription(good.getDescription());
+                        goods.setPrice(good.getPrice());
+                    }
+                    return goods;
+                })
+                .toList());
 
-        goodsList.clear();
+        seller.saveOrder(userEntity.getId(), selectedGoods);
+
+        selectedGoods.clear();
 
         return "redirect:/seller/goods";
     }
 
-    @GetMapping("/seller/order/add")
-    public String addGoods(Model model) {
-        model.addAttribute("goods", new Goods());
-        return "seller/add_goods";
-    }
+    @GetMapping("/seller/goods/get")
+    public String getGoods(Model model) {
+        model.addAttribute("currentUser", WebSecurityConfig
+                .getUserEntity(userRepository)
+                .getUsername());
+        List<Order> completedOrders = orderRepository.findByStatus(Order.OrderStatus.COMPLETED);
 
-    @PostMapping("/seller/order/add")
-    public String addGoods(@ModelAttribute("goods") Goods goods) {
-        Goods foundGoods = goodsRepository.findByNameAndManufacturer(goods.getName(), goods.getManufacturer());
+        List<OrderGoods> gatheredGoods = new ArrayList<>();
+        completedOrders.forEach(order -> {
+            List<OrderGoods> list = orderGoodsRepository.findByOrderAndStatus(order, OrderGoods.GatherStatus.GATHERED);
+            gatheredGoods.addAll(list);
+        });
+        model.addAttribute("goods", gatheredGoods); // добавляем данные на страницу
+        model.addAttribute("orders", completedOrders); // добавляем данные на страницу
 
-        if (foundGoods != null) {
-            foundGoods.setCount(goods.getCount());
-            goodsList.add(foundGoods);
-        }
-
-        return "redirect:/seller/order";
+        return "seller/get";
     }
 }

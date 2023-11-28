@@ -9,19 +9,15 @@
 <div id="mySidenav" class="sidenav">
     <div>
         <a href="/" class="user-display" th:text="${currentUser}"></a>
-        <a href="/seller/goods" class="user-display">Товары</a>
-        <a href="/seller/order" class="user-display">Заказы</a>
+        <a href="/storekeeper/goods" class="user-display">Товары</a>
+        <a href="/storekeeper/orders" class="user-display">Заказы</a>
     </div>
     <div class="logout-container">
         <a href="/logout" class="user-display">Выйти</a>
     </div>
 </div>
+<h1>Товары на складе</h1>
 <div class="main-content">
-<header class="centre-from-left">
-    <button class="blue-button" type="button" onclick="location.href='/seller/order'">Оформить заказ</button>
-    <button class="black-button button-left" type="button" onclick="location.href='/seller/goods/get'">Получить товары со склада</button>
-    <br>
-</header>
     <div th:if="${#lists.isEmpty(goods)}">
         <p>В магазине нет товаров</p>
     </div>
@@ -40,10 +36,10 @@
         <tbody>
         <tr th:each="obj : ${goods}">
             <td th:text="${objStat.count}"></td>
-            <td th:text="${obj.goods.name}"></td>
-            <td th:text="${obj.goods.manufacturer}"></td>
-            <td th:text="${obj.goods.description}"></td>
-            <td th:text="${obj.goods.price}"></td>
+            <td th:text="${obj.name}"></td>
+            <td th:text="${obj.manufacturer}"></td>
+            <td th:text="${obj.description}"></td>
+            <td th:text="${obj.price}"></td>
             <td th:text="${obj.count}"></td>
         </tr>
         </tbody>
