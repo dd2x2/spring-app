@@ -1,17 +1,14 @@
-package ru.dverkask.springapp.domain.entity;
+package ru.dverkask.springapp.domain;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ru.dverkask.springapp.domain.Goods;
-import ru.dverkask.springapp.domain.Order;
-import ru.dverkask.springapp.domain.OrderGoods;
 import ru.dverkask.springapp.repositories.GoodsRepository;
 import ru.dverkask.springapp.repositories.OrderGoodsRepository;
 import ru.dverkask.springapp.repositories.OrderRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -48,8 +45,8 @@ public class Storekeeper extends UserEntity {
 
                     if (newGoodsCount < 0) {
                         throw new IllegalArgumentException(String.format(
-                                "На складе нет необходимого количества товаров (на складе: %d, в заказе: %d)",
-                                goods.getCount(), item.getCount()));
+                                "Товара %s не хватает на складе (на складе: %d, в заказе: %d)",
+                                goods.getName(), goods.getCount(), item.getCount()));
                     }
                 }
             }
@@ -75,5 +72,22 @@ public class Storekeeper extends UserEntity {
                 orderGoodsRepository.save(item);
             }
         }
+    }
+
+    public void returnGoods(Long orderId) {
+        Order order = orderRepository.findById(orderId).orElse(null);
+
+        List<OrderGoods> orderGoodsList = orderGoodsRepository.findByOrder(order);
+
+        for (OrderGoods orderGoods : orderGoodsList) {
+            Goods goods = orderGoods.getGoods();
+            goods.setCount(goods.getCount() + orderGoods.getCount());
+        }
+
+        assert order != null;
+        order.setStatus(Order.OrderStatus.RETURNED);
+        orderRepository.save(order);
+
+        goodsRepository.saveAll(orderGoodsList.stream().map(OrderGoods::getGoods).collect(Collectors.toList()));
     }
 }

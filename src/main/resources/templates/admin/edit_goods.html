@@ -4,6 +4,27 @@
     <meta charset="UTF-8">
     <title>Редактирование товара</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <script>
+        window.onload = function() {
+            document.querySelector('form').addEventListener('submit', function(event) {
+                var price = document.querySelector('input[name="price"]');
+                var count = document.querySelector('input[name="count"]');
+                var error = "";
+
+                if (+price.value < 0) {
+                    error += "Введена неверная цена. ";
+                }
+                if (+count.value <= 0) {
+                    error += "Введено неверное количество товара.";
+                }
+
+                if (error.length) {
+                    event.preventDefault();
+                    alert(error);
+                }
+            });
+        };
+    </script>
 </head>
 <body>
 <div id="mySidenav" class="sidenav">

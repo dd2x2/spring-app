@@ -17,16 +17,15 @@ public class Order {
         ORDERED,
         COMPLETED,
         ACCEPTED,
-        CANCELED
+        CANCELED,
+        RETURNED
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "seller_id", nullable = false)
     private Long sellerId;
-
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderGoods> goodsWithCount = new ArrayList<>();
     private LocalDateTime orderTime;

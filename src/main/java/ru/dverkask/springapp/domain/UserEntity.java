@@ -1,4 +1,4 @@
-package ru.dverkask.springapp.domain.entity;
+package ru.dverkask.springapp.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;

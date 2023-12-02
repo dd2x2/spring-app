@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Оформление заказа</title>
+    <title>Отпуск товаров покупателю</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
     <script src="/js/main.js"></script>
     <script>
@@ -13,13 +13,16 @@
                     if (checkbox.checked) {
                         var textBox = document.getElementById('text_' + checkbox.value);
                         var quantity = +textBox.value;
-                        if (isNaN(quantity) || quantity <= 0) {
+                        var countText = document.getElementById('count_' + checkbox.value).innerText;
+                        var objCount = parseInt(countText, 10);
+                        if (isNaN(quantity) || quantity <= 0 || (quantity > objCount)) {
                             alert("Указано неверное количество товара");
                             event.preventDefault();
                             return false;
                         }
+                        return true;
                     }
-                    return true;
+                    return false;
                 });
                 if (!checked) {
                     event.preventDefault();
@@ -40,34 +43,37 @@
         <a href="/logout" class="user-display">Выйти</a>
     </div>
 </div>
+
 <div class="main-content">
-    <h1>Заказать товары</h1>
-    <form th:action="@{/seller/order}" method="post">
-        <button class="black-button centred" type="submit">Заказать</button>
+    <h1>Отпуск товаров покупателю</h1>
+    <form th:action="@{/seller/goods/give}" method="post" style="margin-bottom: 20px;">
+        <button type="submit" class="blue-button centred">Отправить</button>
         <br>
-        <table>
+        <div th:if="${#lists.isEmpty(allShopGoods)}">
+            <p>В магазине нет товаров</p>
+        </div>
+
+        <table th:unless="${#lists.isEmpty(allShopGoods)}">
             <thead>
             <tr>
                 <th>Название</th>
                 <th>Производитель</th>
+                <th>Цена</th>
                 <th>Количество</th>
             </tr>
             </thead>
-            <tfoot th:if="${#lists.isEmpty(goods)}">
-            <tr>
-                <td colspan="3">Нет товаров</td>
-            </tr>
-            </tfoot>
-
-            <tr th:each="obj : ${goods}">
-                <td th:text="${obj.name}"></td>
-                <td th:text="${obj.manufacturer}"></td>
-                <td th:text="${obj.count}"></td>
+            <tbody>
+            <tr th:each="obj : ${allShopGoods}">
+                <td th:text="${obj.goods.name}"></td>
+                <td th:text="${obj.goods.manufacturer}"></td>
+                <td th:text="${obj.goods.price}"></td>
+                <td th:id="${'count_'+obj.id}" th:text="${obj.count}"></td>
                 <td><input type="checkbox" th:id="${'checkbox_'+obj.id}" th:value="${obj.id}" th:name="selectedgoods"
                            th:onclick="'enableDisableTextBox(\'' + ${obj.id} + '\');'"/>
                     <input type='hidden' th:name="'id_' + ${obj.id}" th:value="${obj.id}">
                     <input type="text" th:id="${'text_'+obj.id}" th:name="${'text_'+obj.id}" disabled/></td>
             </tr>
+            </tbody>
         </table>
     </form>
 </div>

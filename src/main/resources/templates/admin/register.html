@@ -1,59 +1,71 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<title>Регистрация пользователей</title>
-	<link rel="stylesheet" th:href="@{/css/style.css}" />
+    <meta charset="UTF-8">
+    <title>Регистрация пользователей</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('register-form').addEventListener('submit', function(e) {
+                var roles = document.getElementById('roles');
+                if (roles.selectedIndex === -1) {
+                    e.preventDefault();
+                    alert('Вы не выбрали роль');
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 <div id="mySidenav" class="sidenav">
-	<div>
-		<a href="/" class="user-display" th:text="${currentUser}"></a>
-		<a href="/admin/register" class="user-display">Регистрация пользователей</a>
-		<a href="/admin/goods" class="user-display">Товары</a>
-	</div>
-	<div class="logout-container">
-		<a href="/logout" class="user-display">Выйти</a>
-	</div>
+    <div>
+        <a href="/" class="user-display" th:text="${currentUser}"></a>
+        <a href="/admin/register" class="user-display">Регистрация пользователей</a>
+        <a href="/admin/goods" class="user-display">Товары</a>
+    </div>
+    <div class="logout-container">
+        <a href="/logout" class="user-display">Выйти</a>
+    </div>
 </div>
 <div class="main-content">
-		<div>
-			<h1>Регистрация пользователей</h1>
-		</div>
-		<div id="register-form">
-			<form th:action="@{/admin/process_register}" th:object="${user}"
-				method="post" style="max-width: 600px; margin: 0 auto;">
-			<div class="m-3">
-				<div class="form-group row">
-					<label class="col-4 col-form-label">Имя: </label>
-					<div class="col-8">
-						<input type="text" th:field="*{username}" class="form-control" required />
-					</div>
-				</div>
+    <div>
+        <h1>Регистрация пользователей</h1>
+    </div>
+    <div id="register-form">
+        <form th:action="@{/admin/process_register}" th:object="${user}"
+              method="post" style="max-width: 600px; margin: 0 auto;">
+            <div class="m-3">
+                <div class="form-group row">
+                    <label class="col-4 col-form-label">Имя: </label>
+                    <div class="col-8">
+                        <input type="text" th:field="*{username}" class="form-control" required/>
+                    </div>
+                </div>
 
-				<div class="form-group row">
-					<label class="col-4 col-form-label">Пароль: </label>
-					<div class="col-8">
-						<input type="password" th:field="*{password}" class="form-control"
-								required minlength="6" maxlength="10"/>
-					</div>
-				</div>
+                <div class="form-group row">
+                    <label class="col-4 col-form-label">Пароль: </label>
+                    <div class="col-8">
+                        <input type="password" th:field="*{password}" class="form-control"
+                               required minlength="6" maxlength="10"/>
+                    </div>
+                </div>
 
-				<div class="form-group row">
-					<label class="col-4 col-form-label">Роль: </label>
-					<div class="col-8">
-						<select th:field="*{roles}" class="form-control" multiple="multiple">
-							<option th:each="role : ${allRoles}" th:value="${role}" th:text="${role.getDescription()}"></option>
-						</select>
-					</div>
-				</div>
-				<br>
-				<div>
-					<button type="submit" class="black-button centred btn btn-primary">Зарегистрировать</button>
-				</div>
-			</div>
-			</form>
-		</div>
-	</div>
+                <div class="form-group row">
+                    <label class="col-4 col-form-label">Роль: </label>
+                    <div class="col-8">
+                        <select id="roles" th:field="*{roles}" class="form-control" multiple="multiple">
+                            <option th:each="role : ${allRoles}" th:value="${role}"
+                                    th:text="${role.getDescription()}"></option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <button type="submit" class="black-button centred btn btn-primary">Зарегистрировать</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 </body>
 </html>

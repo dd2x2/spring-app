@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Все товары</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
 <div id="mySidenav" class="sidenav">
@@ -17,38 +17,45 @@
     </div>
 </div>
 <div class="main-content">
-<button class="black-button centred" onclick="window.location.href='/admin/goods/add';">Добавить товар</button>
-<br>
+    <h1>Все товары</h1>
+    <br>
+
+    <button class="black-button centred" onclick="window.location.href='/admin/goods/add';">Добавить товар</button>
+    <br>
     <div th:if="${#lists.isEmpty(goods)}">
         <p>Ещё не добавлено ни одного товара</p>
     </div>
 
-<table th:unless="${#lists.isEmpty(goods)}">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Название</th>
-        <th>Производитель</th>
-        <th>Описание</th>
-        <th>Цена</th>
-        <th>Количество</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="obj : ${goods}">
-        <td class="narrow" th:text="${objStat.count}"></td>
-        <td class="narrow" th:text="${obj.name}"></td>
-        <td class="narrow" th:text="${obj.manufacturer}"></td>
-        <td class="narrow" th:text="${obj.description}"></td>
-        <td class="narrow" th:text="${obj.price}"></td>
-        <td class="narrow" th:text="${obj.count}"></td>
-        <td>
-            <button class="blue-button" th:onclick="'window.location.href=\'/admin/goods/edit/' + ${obj.id} + '\''">Редактировать</button>
-            <button class="blue-button" th:onclick="'window.location.href=\'/admin/goods/delete/' + ${obj.id} + '\''">Удалить</button>
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <table th:unless="${#lists.isEmpty(goods)}">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Производитель</th>
+            <th>Описание</th>
+            <th>Цена</th>
+            <th>Количество</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="obj : ${goods}">
+            <td class="narrow" th:text="${objStat.count}"></td>
+            <td class="narrow" th:text="${obj.name}"></td>
+            <td class="narrow" th:text="${obj.manufacturer}"></td>
+            <td class="narrow" th:text="${obj.description}"></td>
+            <td class="narrow" th:text="${obj.price}"></td>
+            <td class="narrow" th:text="${obj.count}"></td>
+            <td>
+                <button class="blue-button" th:onclick="'window.location.href=\'/admin/goods/edit/' + ${obj.id} + '\''">
+                    Редактировать
+                </button>
+                <button class="blue-button"
+                        th:onclick="'window.location.href=\'/admin/goods/delete/' + ${obj.id} + '\''">Удалить
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

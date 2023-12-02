@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Storekeeper Orders</title>
+    <title>Заказы</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
-    <script src="/js/toggle.js"></script>
-    <script src="/js/checkSelectedGoods.js"></script>
+    <script src="/js/main.js"></script>
 </head>
 <body>
 <div id="mySidenav" class="sidenav">
@@ -19,7 +18,8 @@
 </div>
 
 <div class="main-content">
-    <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+    <h1>Заказы</h1>
+    <br>
 
     <div th:if="${#lists.isEmpty(orders)}">
         <p>На данный момент нет заказов</p>
@@ -28,8 +28,9 @@
     <div th:each="order : ${orders}">
         <div class="order-container">
             <div class="buttons-group centre-from-left">
-                <form th:action="@{'/storekeeper/orders/complete/' + ${order.id}}" method="post" th:onsubmit="'checkSelectedGoods(event, \'' + ${order.id} + '\')'">
+                <form th:action="@{'/storekeeper/orders/complete/' + ${order.id}}" method="post" th:onsubmit="'submitForm(event, \'' + ${order.id} + '\')'">
                     <button class="blue-button" type="submit">Отправить товары в магазин</button>
+                    <br>
                     <table>
                         <thead>
                         <tr>

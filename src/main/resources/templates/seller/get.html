@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Storekeeper Orders</title>
+    <title>Получение товаров со склада</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script src="/js/main.js"></script>
 </head>
 <body>
 <div id="mySidenav" class="sidenav">
@@ -17,28 +18,36 @@
 </div>
 
 <div class="main-content">
+    <h1>Получение товаров со склада</h1>
+
     <div th:if="${#lists.isEmpty(orders)}">
         <p>На данный момент нет заказов</p>
     </div>
 
-    <h1>Получение товаров со склада</h1>
-
     <div th:each="order : ${orders}">
         <h2>Заказ #[[${order.id}]]</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Название</th>
-                <th>Производитель</th>
-                <th>Количество</th>
-            </tr>
-            </thead>
-            <tr th:each="orderGoods : ${order.goodsWithCount}">
-                <td th:text="${orderGoods.goods.name}"></td>
-                <td th:text="${orderGoods.goods.manufacturer}"></td>
-                <td th:text="${orderGoods.count}"></td>
-            </tr>
-        </table>
+        <form th:action="@{/seller/goods/get}" method="post" style="margin-bottom: 20px;">
+            <input type="hidden" name="orderId" th:value="${order.id}"/>
+            <button type="submit" class="blue-button centred">Получить</button>
+            <br>
+            <table>
+                <thead>
+                <tr>
+                    <th><input type="checkbox" th:onclick="'toggle(this, \'order' + ${order.id} + '\')'"/></th>
+                    <th>Название</th>
+                    <th>Производитель</th>
+                    <th>Количество</th>
+                </tr>
+                </thead>
+                <tr th:each="orderGoods : ${order.goodsWithCount}">
+                    <td><input type="checkbox" th:class="'order' + ${order.id}" th:value="${orderGoods.goods.id}"
+                               th:id="${orderGoods.goods.id}" th:name="goods"/></td>
+                    <td th:text="${orderGoods.goods.name}"></td>
+                    <td th:text="${orderGoods.goods.manufacturer}"></td>
+                    <td th:text="${orderGoods.count}"></td>
+                </tr>
+            </table>
+        </form>
         <hr>
     </div>
 </div>

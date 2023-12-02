@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Товары</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 </head>
 <body>
 <div id="mySidenav" class="sidenav">
@@ -17,11 +17,17 @@
     </div>
 </div>
 <div class="main-content">
-<header class="centre-from-left">
-    <button class="blue-button" type="button" onclick="location.href='/seller/order'">Оформить заказ</button>
-    <button class="black-button button-left" type="button" onclick="location.href='/seller/goods/get'">Получить товары со склада</button>
-    <br>
-</header>
+    <h1>Все товары</h1>
+    <header class="centre-from-left">
+        <button class="blue-button" type="button" onclick="location.href='/seller/order'">Оформить заказ</button>
+        <button class="black-button button-left" type="button" onclick="location.href='/seller/goods/get'">Получить
+            товары со склада
+        </button>
+        <button class="black-button button-left" type="button" onclick="location.href='/seller/goods/give'">Отпуск
+            товаров покупателю
+        </button>
+        <br>
+    </header>
     <div th:if="${#lists.isEmpty(goods)}">
         <p>В магазине нет товаров</p>
     </div>

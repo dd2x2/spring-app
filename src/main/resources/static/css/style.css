@@ -64,6 +64,14 @@ table tr:nth-child(even) td:not(.table-button) {
     background-color: #3c4452;
 }
 
+table tr:nth-child(odd) td {
+    background-color: #2f343e;
+}
+
+table tr:nth-child(even) td {
+    background-color: #3c4452;
+}
+
 table thead th {
     color: white;
     font-size: 18px;
@@ -91,6 +99,10 @@ h1 {
     text-align: center;
 }
 
+h2 {
+    color: white;
+}
+
 #register-form {
     background-color: #3c4452;
     width: 50%;
@@ -107,7 +119,7 @@ h1 {
 #register-form .form-group select {
     display: block;
     margin: auto;
-    width: 50%;
+    width: 70%;
 }
 
 #register-form .form-group label {
@@ -173,6 +185,10 @@ input[type="number"] {
     color: #7b8a96;
 }
 
+input[type="password"] {
+    color: #7b8a96;
+}
+
 .form-container {
     display: flex;
     justify-content: space-between;
@@ -201,4 +217,12 @@ input[type="number"] {
     justify-content: center;
     flex-flow: column nowrap;
     align-items: center;
+}
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
 }

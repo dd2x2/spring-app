@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Возвращённые товары</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script src="/js/main.js"></script>
+</head>
+<body>
+<div id="mySidenav" class="sidenav">
+    <div>
+        <a href="/" class="user-display" th:text="${currentUser}"></a>
+        <a href="/storekeeper/goods" class="user-display">Товары</a>
+        <a href="/storekeeper/orders" class="user-display">Заказы</a>
+    </div>
+    <div class="logout-container">
+        <a href="/logout" class="user-display">Выйти</a>
+    </div>
+</div>
+
+<div class="main-content">
+    <h1>Возвращённые товары</h1>
+    <br>
+    
+    <div th:if="${#lists.isEmpty(orders)}">
+        <p>На данный момент нет товаров</p>
+    </div>
+
+    <div th:each="order : ${orders}">
+        <h2>Заказ #[[${order.id}]]</h2>
+        <form th:action="@{/storekeeper/goods/return}" method="post" style="margin-bottom: 20px;">
+            <input type="hidden" name="orderId" th:value="${order.id}"/>
+            <button type="submit" class="blue-button centred">Вернуть на склад</button>
+            <br>
+            <table>
+                <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Производитель</th>
+                    <th>Количество</th>
+                </tr>
+                </thead>
+                <th:block th:each="goods : *{ordersWithReturnedGoods.get(order)}">
+                    <tr th:each="good : ${goods}">
+                        <td th:text="${good.goods.name}"></td>
+                        <td th:text="${good.goods.manufacturer}"></td>
+                        <td th:text="${good.count}"></td>
+                    </tr>
+                </th:block>
+            </table>
+        </form>
+        <hr>
+    </div>
+</div>
+</body>
+</html>

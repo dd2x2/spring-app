@@ -10,7 +10,9 @@ import lombok.Setter;
 public class OrderGoods {
     public enum GatherStatus {
         GATHERED,
-        NOT_GATHERED
+        NOT_GATHERED,
+        ACCEPTED,
+        RETURNED
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,22 +1,14 @@
 package ru.dverkask.springapp.controllers;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import ru.dverkask.springapp.config.WebSecurityConfig;
 import ru.dverkask.springapp.domain.Role;
-import ru.dverkask.springapp.domain.entity.UserEntity;
+import ru.dverkask.springapp.domain.UserEntity;
 import ru.dverkask.springapp.repositories.UserRepository;
 
-import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 @Controller

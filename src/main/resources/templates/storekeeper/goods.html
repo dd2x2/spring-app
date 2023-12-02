@@ -22,6 +22,9 @@
         <p>В магазине нет товаров</p>
     </div>
 
+    <button class="black-button centred" onclick="window.location.href='/storekeeper/goods/return';">Возвращённые товары</button>
+    <br>
+
     <table th:unless="${#lists.isEmpty(goods)}">
         <thead>
         <tr>

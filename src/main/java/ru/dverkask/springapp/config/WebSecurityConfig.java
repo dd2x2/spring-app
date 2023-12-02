@@ -8,9 +8,7 @@
     import org.springframework.security.core.context.SecurityContextHolder;
     import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
     import org.springframework.security.web.SecurityFilterChain;
-    import ru.dverkask.springapp.domain.entity.Seller;
-    import ru.dverkask.springapp.domain.entity.UserEntity;
-    import ru.dverkask.springapp.repositories.OrderRepository;
+    import ru.dverkask.springapp.domain.UserEntity;
     import ru.dverkask.springapp.repositories.UserRepository;
 
     import java.util.Optional;

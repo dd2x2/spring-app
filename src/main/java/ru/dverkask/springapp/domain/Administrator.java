@@ -1,10 +1,8 @@
-package ru.dverkask.springapp.domain.entity;
+package ru.dverkask.springapp.domain;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.dverkask.springapp.domain.Goods;
-import ru.dverkask.springapp.domain.Role;
 import ru.dverkask.springapp.repositories.GoodsRepository;
 import ru.dverkask.springapp.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
