@@ -1,7 +1,6 @@
 package ru.dverkask.springapp.domain;
 
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.dverkask.springapp.config.WebSecurityConfig;
@@ -117,11 +116,11 @@ public class Seller extends UserEntity {
 
         UserEntity userEntity = WebSecurityConfig.getUserEntity(userRepository);
 
-        Check check = new Check();
-        check.setSellerId(userEntity.getId());
-        check.setSellTime(LocalDateTime.now());
+        Receipt receipt = new Receipt();
+        receipt.setSellerId(userEntity.getId());
+        receipt.setSellTime(LocalDateTime.now());
 
-        List<CheckGoods> checkGoodsList = new ArrayList<>();
+        List<ReceiptGoods> receiptGoodsList = new ArrayList<>();
 
         for (String itemCount : itemCounts) {
             long id = Long.parseLong(itemCount.split("_")[1]);
@@ -136,14 +135,14 @@ public class Seller extends UserEntity {
                 shopGoods.setCount(shopGoods.getCount() - Math.toIntExact(amount));
                 shopGoodsRepository.save(shopGoods);
 
-                CheckGoods checkGoods = new CheckGoods();
-                checkGoods.setCount((int)amount);
-                checkGoods.setGoods(shopGoods.getGoods());
-                checkGoods.setCheck(check);
-                checkGoodsList.add(checkGoods);
+                ReceiptGoods receiptGoods = new ReceiptGoods();
+                receiptGoods.setCount((int)amount);
+                receiptGoods.setGoods(shopGoods.getGoods());
+                receiptGoods.setReceipt(receipt);
+                receiptGoodsList.add(receiptGoods);
             }
-            check.setGoods(checkGoodsList);
-            checkRepository.save(check);
+            receipt.setGoods(receiptGoodsList);
+            checkRepository.save(receipt);
         }
     }
 }

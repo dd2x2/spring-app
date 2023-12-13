@@ -5,17 +5,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "check_goods")
+@Table(name = "receipt_goods")
 @Setter
 @Getter
-public class CheckGoods {
+public class ReceiptGoods {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "check_id")
-    private Check check;
+    @JoinColumn(name = "receipt_id")
+    private Receipt receipt;
 
     @Column
     private int count;

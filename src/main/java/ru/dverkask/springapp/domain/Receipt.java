@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "checks")
+@Table(name = "receipts")
 @Getter
 @Setter
-public class Check {
+public class Receipt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,6 +22,6 @@ public class Check {
     @Column
     private LocalDateTime sellTime;
 
-    @OneToMany(mappedBy = "check", cascade = CascadeType.ALL)
-    private List<CheckGoods> goods;
+    @OneToMany(mappedBy = "receipt", cascade = CascadeType.ALL)
+    private List<ReceiptGoods> goods;
 }
