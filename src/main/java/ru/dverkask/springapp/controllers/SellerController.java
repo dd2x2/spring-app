@@ -27,7 +27,7 @@ public class SellerController {
     private final Seller seller;
     @GetMapping("/goods")
     public String getAllGoods(Model model) {
-        List<ShopGoods> goods = seller.getAllProducts();
+        List<ShopGoods> goods = shopGoodsRepository.findAll();
         model.addAttribute("goods", goods);
         model.addAttribute("currentUser", WebSecurityConfig
                 .getUserEntity(userRepository)
@@ -89,7 +89,7 @@ public class SellerController {
         model.addAttribute("currentUser", WebSecurityConfig
                 .getUserEntity(userRepository)
                 .getUsername());
-        List<ShopGoods> allShopGoods = (List<ShopGoods>) shopGoodsRepository.findAll();
+        List<ShopGoods> allShopGoods = shopGoodsRepository.findAll();
         model.addAttribute("allShopGoods", allShopGoods);
 
         return "seller/give";

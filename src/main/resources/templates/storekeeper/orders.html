@@ -31,6 +31,7 @@
                 <form th:action="@{'/storekeeper/orders/complete/' + ${order.id}}" method="post" th:onsubmit="'submitForm(event, \'' + ${order.id} + '\')'">
                     <button class="blue-button" type="submit">Отправить товары в магазин</button>
                     <br>
+                    <br>
                     <table>
                         <thead>
                         <tr>
@@ -52,10 +53,20 @@
                 <form th:action="@{'/storekeeper/orders/cancel/' + ${order.id}}" method="post">
                     <button class="black-button" type="submit">Отклонить заказ</button>
                 </form>
+                <br>
             </div>
         </div>
         <hr/>
+        <br>
     </div>
 </div>
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span id="close" class="close">&times;</span>
+        <p id="modal-text">.</p>
+    </div>
+</div>
+
 </body>
 </html>

@@ -1,6 +1,7 @@
 package ru.dverkask.springapp.domain;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.dverkask.springapp.config.WebSecurityConfig;
@@ -17,6 +18,8 @@ public class Seller extends UserEntity {
     private final OrderGoodsRepository orderGoodsRepository;
     private final ShopGoodsRepository shopGoodsRepository;
     private final UserRepository userRepository;
+    private final CheckRepository checkRepository;
+    private final CheckGoodsRepository checkGoodsRepository;
 
     public void saveOrder(Long id, List<Goods> goodsList) {
         Optional<UserEntity> user = Optional.ofNullable(userRepository.findById(id)
@@ -24,25 +27,23 @@ public class Seller extends UserEntity {
         if (user.isPresent()) {
             UserEntity userEntity = user.get();
 
-            if (userEntity.getRoles().contains(Role.SELLER)) {
-                Order order = new Order();
+            Order order = new Order();
 
-                order.setSellerId(userEntity.getId());
-                order.setOrderTime(LocalDateTime.now());
-                order.setStatus(Order.OrderStatus.ORDERED);
+            order.setSellerId(userEntity.getId());
+            order.setOrderTime(LocalDateTime.now());
+            order.setStatus(Order.OrderStatus.ORDERED);
 
-                for (Goods goods : goodsList) {
-                    OrderGoods orderGoods = new OrderGoods();
-                    orderGoods.setGoods(goods);
-                    orderGoods.setCount(goods.getCount());
-                    orderGoods.setOrder(order);
-                    orderGoods.setStatus(OrderGoods.GatherStatus.NOT_GATHERED);
+            for (Goods goods : goodsList) {
+                OrderGoods orderGoods = new OrderGoods();
+                orderGoods.setGoods(goods);
+                orderGoods.setCount(goods.getCount());
+                orderGoods.setOrder(order);
+                orderGoods.setStatus(OrderGoods.GatherStatus.NOT_GATHERED);
 
-                    order.getGoodsWithCount().add(orderGoods);
-                }
-
-                orderRepository.save(order);
+                order.getGoodsWithCount().add(orderGoods);
             }
+
+            orderRepository.save(order);
         }
     }
 
@@ -82,36 +83,26 @@ public class Seller extends UserEntity {
 
     public void acceptGoods(List<Long> goodsIds,
                             Long orderId) {
-
-//        if (goodsIds == null) goodsIds = new ArrayList<>();
-//
         Order order = orderRepository.findById(orderId).orElse(null);
-//
-//        List<OrderGoods> orderGoodsList = orderGoodsRepository.findByOrder(order);
-//
-//        for (OrderGoods orderGoods : orderGoodsList) {
-//            if (!goodsIds.contains(orderGoods.getGoods().getId()) && orderGoods.getStatus().equals(OrderGoods.GatherStatus.ACCEPTED)) {
-//                orderGoods.setStatus(OrderGoods.GatherStatus.RETURNED);
-//                orderGoodsRepository.save(orderGoods);
-//            }
-//        }
 
         if (order != null) {
-            for (Long id : goodsIds) {
-                OrderGoods selectedOrderGoods = orderGoodsRepository.findByOrderAndGoodsId(order, id);
-                if (selectedOrderGoods != null) {
-                    selectedOrderGoods.setStatus(OrderGoods.GatherStatus.ACCEPTED);
-                    orderGoodsRepository.save(selectedOrderGoods);
+            if (goodsIds != null) {
+                for (Long id : goodsIds) {
+                    OrderGoods selectedOrderGoods = orderGoodsRepository.findByOrderAndGoodsId(order, id);
+                    if (selectedOrderGoods != null) {
+                        selectedOrderGoods.setStatus(OrderGoods.GatherStatus.ACCEPTED);
+                        orderGoodsRepository.save(selectedOrderGoods);
 
-                    ShopGoods shopGoods = shopGoodsRepository.findByGoods(selectedOrderGoods.getGoods());
-                    if (shopGoods == null) {
-                        shopGoods = new ShopGoods();
-                        shopGoods.setGoods(selectedOrderGoods.getGoods());
-                        shopGoods.setCount(selectedOrderGoods.getCount());
-                    } else {
-                        shopGoods.setCount(shopGoods.getCount() + selectedOrderGoods.getCount());
+                        ShopGoods shopGoods = shopGoodsRepository.findByGoods(selectedOrderGoods.getGoods());
+                        if (shopGoods == null) {
+                            shopGoods = new ShopGoods();
+                            shopGoods.setGoods(selectedOrderGoods.getGoods());
+                            shopGoods.setCount(selectedOrderGoods.getCount());
+                        } else {
+                            shopGoods.setCount(shopGoods.getCount() + selectedOrderGoods.getCount());
+                        }
+                        shopGoodsRepository.save(shopGoods);
                     }
-                    shopGoodsRepository.save(shopGoods);
                 }
             }
             order.setStatus(Order.OrderStatus.ACCEPTED);
@@ -123,6 +114,14 @@ public class Seller extends UserEntity {
         List<String> itemCounts = allParams.keySet().stream()
                 .filter(key -> key.startsWith("text_"))
                 .toList();
+
+        UserEntity userEntity = WebSecurityConfig.getUserEntity(userRepository);
+
+        Check check = new Check();
+        check.setSellerId(userEntity.getId());
+        check.setSellTime(LocalDateTime.now());
+
+        List<CheckGoods> checkGoodsList = new ArrayList<>();
 
         for (String itemCount : itemCounts) {
             long id = Long.parseLong(itemCount.split("_")[1]);
@@ -136,11 +135,15 @@ public class Seller extends UserEntity {
             } else {
                 shopGoods.setCount(shopGoods.getCount() - Math.toIntExact(amount));
                 shopGoodsRepository.save(shopGoods);
-            }
-        }
-    }
 
-    public List<ShopGoods> getAllProducts() {
-        return (List<ShopGoods>) shopGoodsRepository.findAll();
+                CheckGoods checkGoods = new CheckGoods();
+                checkGoods.setCount((int)amount);
+                checkGoods.setGoods(shopGoods.getGoods());
+                checkGoods.setCheck(check);
+                checkGoodsList.add(checkGoods);
+            }
+            check.setGoods(checkGoodsList);
+            checkRepository.save(check);
+        }
     }
 }

@@ -41,7 +41,7 @@ public class AdminController {
                 .getUserEntity(userRepository)
                 .getUsername());
 
-        return "redirect:/login";
+        return "redirect:/";
     }
 
     @GetMapping("/goods")

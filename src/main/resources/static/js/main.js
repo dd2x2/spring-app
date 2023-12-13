@@ -1,3 +1,8 @@
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById('close').onclick = function() {
+        document.getElementById('myModal').style.display = "none";
+    }
+});
 function submitForm(event, orderId) {
     checkSelectedGoods(event, orderId);
     if(!event.defaultPrevented) {
@@ -16,10 +21,10 @@ function completeOrder(event, orderId) {
         if (res.ok) {
             location.reload();
         } else {
-            res.text().then(errorMessage => alert(errorMessage))
+            res.text().then(errorMessage => openModal(errorMessage))
         }
     }).catch(err => {
-        alert(err);
+        openModal(err);
     });
 }
 function checkSelectedGoods(e, orderId) {
@@ -30,7 +35,7 @@ function checkSelectedGoods(e, orderId) {
     });
     if (selectedCount === 0) {
         e.preventDefault();
-        alert("Вы не выбрали ни одного товара в заказе под номером №" + orderId);
+        openModal("Вы не выбрали ни одного товара в заказе под номером №" + orderId);
     }
 }
 
@@ -46,3 +51,14 @@ function enableDisableTextBox(id) {
     const textbox = document.getElementById('text_' + id);
     textbox.disabled = !checkbox.checked;
 }
+
+function openModal(text) {
+    document.getElementById('modal-text').innerText = text;
+    document.getElementById('myModal').style.display = "block";
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById('close').onclick = function() {
+        document.getElementById('myModal').style.display = "none";
+    }
+});

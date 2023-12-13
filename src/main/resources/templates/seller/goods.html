@@ -26,8 +26,9 @@
         <button class="black-button button-left" type="button" onclick="location.href='/seller/goods/give'">Отпуск
             товаров покупателю
         </button>
-        <br>
     </header>
+    <br>
+    
     <div th:if="${#lists.isEmpty(goods)}">
         <p>В магазине нет товаров</p>
     </div>

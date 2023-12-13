@@ -6,27 +6,55 @@
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
     <script src="/js/main.js"></script>
     <script>
-        window.onload = function () {
-            document.querySelector('form').addEventListener('submit', function (event) {
-                var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-                var checked = Array.from(checkboxes).some(function (checkbox) {
-                    if (checkbox.checked) {
-                        var textBox = document.getElementById('text_' + checkbox.value);
-                        var quantity = +textBox.value;
-                        if (isNaN(quantity) || quantity <= 0) {
-                            alert("Указано неверное количество товара");
-                            event.preventDefault();
-                            return false;
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var modal = document.getElementById("myModal");
+            var span = document.getElementsByClassName("close")[0];
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            };
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            function openModal(text) {
+                document.getElementById('modal-text').innerText = text;
+                modal.style.display = "block";
+            }
+
+            window.onload = function () {
+                document.querySelector('form').addEventListener('submit', function (event) {
+                    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                    var isAnyChecked = false;
+                    var isValid = true;
+
+                    checkboxes.forEach(function(checkbox) {
+                        if (checkbox.checked) {
+                            isAnyChecked = true;
+
+                            var textBox = document.getElementById('text_' + checkbox.value);
+                            var quantity = Number(textBox.value);
+
+                            if (isNaN(quantity) || quantity <= 0) {
+                                isValid = false;
+                                openModal("Указано неверное количество товара");
+                            }
+                        }
+                    });
+
+                    if (!isAnyChecked || !isValid) {
+                        event.preventDefault();
+
+                        if (!isAnyChecked) {
+                            openModal("Вы не выбрали ни одного товара для заказа");
                         }
                     }
-                    return true;
                 });
-                if (!checked) {
-                    event.preventDefault();
-                    alert("Вы не выбрали ни одного товара для заказа");
-                }
-            });
-        };
+            };
+        });
     </script>
 </head>
 <body>
@@ -71,5 +99,15 @@
         </table>
     </form>
 </div>
+
+<div id="myModal" class="modal">
+
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="modal-text">.</p>
+    </div>
+
+</div>
+
 </body>
 </html>
