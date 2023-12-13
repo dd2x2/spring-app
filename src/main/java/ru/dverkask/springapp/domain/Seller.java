@@ -16,9 +16,9 @@ public class Seller extends UserEntity {
     private final GoodsRepository goodsRepository;
     private final OrderGoodsRepository orderGoodsRepository;
     private final ShopGoodsRepository shopGoodsRepository;
-    private final UserRepository userRepository;
-    private final CheckRepository checkRepository;
-    private final CheckGoodsRepository checkGoodsRepository;
+    private final UserRepository         userRepository;
+    private final ReceiptRepository      receiptRepository;
+    private final ReceiptGoodsRepository receiptGoodsRepository;
 
     public void saveOrder(Long id, List<Goods> goodsList) {
         Optional<UserEntity> user = Optional.ofNullable(userRepository.findById(id)
@@ -142,7 +142,7 @@ public class Seller extends UserEntity {
                 receiptGoodsList.add(receiptGoods);
             }
             receipt.setGoods(receiptGoodsList);
-            checkRepository.save(receipt);
+            receiptRepository.save(receipt);
         }
     }
 }
